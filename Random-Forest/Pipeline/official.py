@@ -15,9 +15,9 @@ model_package_group_name = f"MLOpsAWSModelGroup"
 local_path = "data/abalone-dataset.csv"
 
 s3 = boto3.resource("s3")
-s3.Bucket(f"sagemaker-example-files-prod-{region}").download_file(
-    "datasets/tabular/uci_abalone/abalone.csv", local_path
-)
+# s3.Bucket(f"sagemaker-example-files-prod-{region}").download_file(
+#     "datasets/tabular/uci_abalone/abalone.csv", local_path
+# )
 
 base_uri = f"s3://{default_bucket}/abalone"
 input_data_uri = sagemaker.s3.S3Uploader.upload(
