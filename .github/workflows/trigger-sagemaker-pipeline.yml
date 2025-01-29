@@ -26,7 +26,7 @@ jobs:
     - name: Trigger SageMaker Pipeline
       run: |
         # Optional: Run a script or invoke the pipeline directly
-        python Random-Forest/Pipeline/dummy.py  # This should trigger the SageMaker pipeline from your GitHub repo
+        python Random-Forest/Pipeline/official.py  # This should trigger the SageMaker pipeline from your GitHub repo
 
     # - name: Monitor Pipeline Execution
     #   run: |
