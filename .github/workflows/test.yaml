@@ -1,0 +1,84 @@
+name: Trigger SageMaker Pipeline & Deploy Model
+
+on:
+  workflow_dispatch:
+
+jobs:
+  checkout-code:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+  setup-aws-cli:
+    needs: checkout-code
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+  install-dependencies:
+    needs: setup-aws-cli
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Dependencies
+      run: |
+        pip install -r Random-Forest/Pipeline/requirement.txt
+
+  trigger-pipeline:
+    needs: install-dependencies
+    runs-on: ubuntu-latest
+    steps:
+    - name: Trigger SageMaker Pipeline
+      run: |
+        python Random-Forest/Pipeline/official.py
+
+  approve-model:
+    needs: trigger-pipeline
+    runs-on: ubuntu-latest
+    steps:
+    - name: Approve Model in SageMaker
+      run: |
+        # Assuming the training job output is a model artifact, create a SageMaker model
+        TRAINING_JOB_NAME="your-training-job-name"
+        MODEL_NAME="your-approved-model-name"
+        MODEL_ARTIFACT_PATH=$(aws sagemaker describe-training-job --training-job-name $TRAINING_JOB_NAME --query "ModelArtifacts.S3ModelArtifacts" --output text)
+
+        # Create the model in SageMaker
+        aws sagemaker create-model \
+          --model-name $MODEL_NAME \
+          --primary-container Image="your-container-image",ModelDataUrl=$MODEL_ARTIFACT_PATH \
+          --execution-role-arn "arn:aws:iam::your-account-id:role/your-role-name"
+
+  deploy-model:
+    needs: approve-model
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Model to SageMaker Endpoint
+      run: |
+        # Create or update the SageMaker endpoint
+        ENDPOINT_NAME="your-endpoint-name"
+        MODEL_NAME="your-approved-model-name"
+
+        # Check if the endpoint exists
+        ENDPOINT_STATUS=$(aws sagemaker describe-endpoint --endpoint-name $ENDPOINT_NAME --query "EndpointStatus" --output text)
+
+        if [ "$ENDPOINT_STATUS" != "InService" ]; then
+          # Create or update the endpoint
+          aws sagemaker create-endpoint-config \
+            --endpoint-config-name $ENDPOINT_NAME-config \
+            --production-variants VariantName=AllTraffic,ModelName=$MODEL_NAME,InitialInstanceCount=1,InstanceType="ml.m5.large"
+
+          aws sagemaker create-endpoint \
+            --endpoint-name $ENDPOINT_NAME \
+            --endpoint-config-name $ENDPOINT_NAME-config
+        else
+          # Update the endpoint with the new model
+          aws sagemaker update-endpoint \
+            --endpoint-name $ENDPOINT_NAME \
+            --endpoint-config-name $ENDPOINT_NAME-config
+        fi
