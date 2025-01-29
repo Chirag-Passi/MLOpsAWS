@@ -12,7 +12,7 @@ pipeline_session = PipelineSession()
 default_bucket = sagemaker_session.default_bucket()
 model_package_group_name = f"MLOpsAWSModelGroup"
 
-local_path = "data/abalone-dataset.csv"
+local_path = "Random-Forest/Pipeline/data/abalone-dataset.csv"
 
 s3 = boto3.resource("s3")
 # s3.Bucket(f"sagemaker-example-files-prod-{region}").download_file(
@@ -25,7 +25,7 @@ input_data_uri = sagemaker.s3.S3Uploader.upload(
     desired_s3_uri=base_uri,
 )
 
-local_path = "data/abalone-dataset-batch"
+local_path = "Random-Forest/Pipeline/data/abalone-dataset-batch"
 
 s3 = boto3.resource("s3")
 # s3.Bucket(f"sagemaker-servicecatalog-seedcode-{region}").download_file(
