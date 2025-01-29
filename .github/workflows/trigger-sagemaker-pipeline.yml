@@ -1,0 +1,36 @@
+name: Trigger SageMaker Pipeline
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trigger-pipeline:
+    runs-on: ubuntu-latest  # Run on a fresh Ubuntu environment
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3  # Checkout the repository's code
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v2  # Configure AWS credentials
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    # - name: Install Dependencies
+    #   run: |
+    #     python -m pip install --upgrade pip
+    #     pip install -r requirements.txt  # Install any dependencies if you have a requirements.txt
+
+    - name: Trigger SageMaker Pipeline
+      run: |
+        # Optional: Run a script or invoke the pipeline directly
+        python Random-Forest/Pipeline/dummy.py  # This should trigger the SageMaker pipeline from your GitHub repo
+
+    # - name: Monitor Pipeline Execution
+    #   run: |
+    #     # Optionally, you can monitor the pipeline execution using AWS CLI or SDK
+    #     PIPELINE_NAME="MySageMakerPipeline"
+    #     PIPELINE_EXECUTION_ARN=$(aws sagemaker list-pipeline-executions --pipeline-name $PIPELINE_NAME --query "PipelineExecutionSummaries[0].PipelineExecutionArn" --output text)
+    #     echo "Pipeline execution ARN: $PIPELINE_EXECUTION_ARN"
