@@ -1,0 +1,13 @@
+{
+  "shell_port": 59907,
+  "iopub_port": 38463,
+  "stdin_port": 54279,
+  "control_port": 38713,
+  "hb_port": 57625,
+  "ip": "127.0.0.1",
+  "key": "01398c4e-7f2623bf4dc02acd51537124",
+  "transport": "tcp",
+  "signature_scheme": "hmac-sha256",
+  "kernel_name": "python3",
+  "jupyter_session": "/home/sagemaker-user/Random-Forest/Pipeline/official.ipynb"
+}

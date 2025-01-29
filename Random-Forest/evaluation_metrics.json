@@ -1,0 +1,1 @@
+{"binary_classification_metrics": {"accuracy": {"value": 0.71, "standard_deviation": 0.0}, "precision": {"value": 0.6969291851851852, "standard_deviation": 0.0}, "recall": {"value": 0.71, "standard_deviation": 0.0}}}

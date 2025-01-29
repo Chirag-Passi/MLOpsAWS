@@ -1,0 +1,13 @@
+{
+  "shell_port": 33447,
+  "iopub_port": 43307,
+  "stdin_port": 45605,
+  "control_port": 42829,
+  "hb_port": 60549,
+  "ip": "127.0.0.1",
+  "key": "f4323469-982d26718ec93add530f07ef",
+  "transport": "tcp",
+  "signature_scheme": "hmac-sha256",
+  "kernel_name": "python3",
+  "jupyter_session": "/home/sagemaker-user/Random-Forest/main.ipynb"
+}
