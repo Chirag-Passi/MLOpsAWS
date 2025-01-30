@@ -39,7 +39,7 @@ batch_data_uri = sagemaker.s3.S3Uploader.upload(
     local_path=local_path,
     desired_s3_uri=base_uri,
 )
-print(batch_data_uri)
+# print(batch_data_uri)
 
 from sagemaker.workflow.parameters import (
     ParameterInteger,
@@ -309,3 +309,4 @@ definition
 pipeline.upsert(role_arn=role)
 
 execution = pipeline.start()
+print(execution.arn) 
