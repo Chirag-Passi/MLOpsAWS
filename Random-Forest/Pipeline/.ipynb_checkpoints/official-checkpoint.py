@@ -88,7 +88,7 @@ processor_args = sklearn_processor.run(
         ProcessingOutput(output_name="validation", source="/opt/ml/processing/validation"),
         ProcessingOutput(output_name="test", source="/opt/ml/processing/test"),
     ],
-    code="code/preprocessing.py",
+    code="Random-Forest/Pipeline/code/preprocessing.py",
 )
 
 step_process = ProcessingStep(name="Process", step_args=processor_args)
@@ -173,7 +173,7 @@ eval_args = script_eval.run(
     outputs=[
         ProcessingOutput(output_name="evaluation", source="/opt/ml/processing/evaluation"),
     ],
-    code="code/evaluation.py",
+    code="Random-Forest/Pipeline/code/evaluation.py",
 )
 
 from sagemaker.workflow.properties import PropertyFile
