@@ -34,14 +34,37 @@ jobs:
     - name: Trigger SageMaker Pipeline
       run: |
         # Optional: Run a script or invoke the pipeline directly
-        python Random-Forest/Pipeline/official.py  # This should trigger the SageMaker pipeline from your GitHub repo
+        # python Random-Forest/Pipeline/official.py  # This should trigger the SageMaker pipeline from your GitHub repo
+        execution_arn=$(python Random-Forest/Pipeline/file.py)  # Assuming the script returns the ARN
+        echo "PipelineExecutionArn=$execution_arn" >> $GITHUB_ENV
 
+    - name: Wait for SageMaker Pipeline to Complete
+      id: wait-for-pipeline
+      run: |
+        # Poll SageMaker for the pipeline execution status until it's complete
+        status="InProgress"
+        while [[ "$status" == "InProgress" || "$status" == "Stopping" ]]; do
+          echo "Waiting for pipeline to complete..."
+          sleep 60  # Wait for 1 minute before checking again
+          status=$(aws sagemaker describe-pipeline-execution --pipeline-execution-arn ${{ env.PipelineExecutionArn }} --query 'PipelineExecutionStatus' --output text)
+          echo "Current Status: $status"
+        done
+        
+        if [[ "$status" != "Succeeded" ]]; then
+          echo "Pipeline execution failed with status: $status"
+          exit 1  # Exit with an error if the pipeline didn't succeed
+        else:
+          echo "Pipeline execution succeeded!"
+
+        
     - name: Model Approval
+      if: success()
       run: |
         # Run the model approval script (make sure you have a script for model approval)
         python Random-Forest/Pipeline/code/ModelApproval.py  # Script for model approval
 
     - name: Endpoint Creation
+      if: success()
       run: |
         # Run the endpoint creation script
         python Random-Forest/Pipeline/code/EndPointCreation.py  # Script for creating the endpoint
