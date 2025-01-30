@@ -35,7 +35,7 @@ jobs:
       run: |
         # Optional: Run a script or invoke the pipeline directly
         # python Random-Forest/Pipeline/official.py  # This should trigger the SageMaker pipeline from your GitHub repo
-        execution_arn=$(python Random-Forest/Pipeline/file.py)  # Assuming the script returns the ARN
+        execution_arn=$(python Random-Forest/Pipeline/official.py)  # Assuming the script returns the ARN
         echo "PipelineExecutionArn=$execution_arn" >> $GITHUB_ENV
 
     - name: Wait for SageMaker Pipeline to Complete
