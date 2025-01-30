@@ -3,6 +3,8 @@ import sys
 import boto3
 import sagemaker
 from sagemaker.workflow.pipeline_context import PipelineSession
+import warnings
+warnings.filterwarnings("ignore")
 
 sagemaker_session = sagemaker.session.Session()
 region = sagemaker_session.boto_region_name
