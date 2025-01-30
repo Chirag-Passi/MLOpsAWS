@@ -36,9 +36,12 @@ jobs:
         # Optional: Run a script or invoke the pipeline directly
         python Random-Forest/Pipeline/official.py  # This should trigger the SageMaker pipeline from your GitHub repo
 
-    # - name: Monitor Pipeline Execution
-    #   run: |
-    #     # Optionally, you can monitor the pipeline execution using AWS CLI or SDK
-    #     PIPELINE_NAME="MySageMakerPipeline"
-    #     PIPELINE_EXECUTION_ARN=$(aws sagemaker list-pipeline-executions --pipeline-name $PIPELINE_NAME --query "PipelineExecutionSummaries[0].PipelineExecutionArn" --output text)
-    #     echo "Pipeline execution ARN: $PIPELINE_EXECUTION_ARN"
+    - name: Model Approval
+      run: |
+        # Run the model approval script (make sure you have a script for model approval)
+        python Random-Forest/Pipeline/code/ModelApproval.py  # Script for model approval
+
+    - name: Endpoint Creation
+      run: |
+        # Run the endpoint creation script
+        python Random-Forest/Pipeline/code/EndPointCreation.py  # Script for creating the endpoint
