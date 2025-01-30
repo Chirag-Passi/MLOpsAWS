@@ -25,6 +25,11 @@ jobs:
     needs: setup-aws-cli
     runs-on: ubuntu-latest
     steps:
+    - name: List files for debugging
+      run: |
+        echo "Listing the directory structure..."
+        ls -R   # Lists all files and directories recursively
+
     - name: Install Dependencies
       run: |
         pip install -r Random-Forest/Pipeline/requirement.txt
