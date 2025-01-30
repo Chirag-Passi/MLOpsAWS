@@ -2,6 +2,14 @@ name: Trigger SageMaker Pipeline
 
 on:
   workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main      # Run on push to the main branch
+  #     - develop   # You can list other branches as needed
+  # pull_request:
+  #   branches:
+  #     - main      # Run on pull requests targeting the main branch
+  #     - develop   # Run on pull requests targeting the develop branch
 
 jobs:
   trigger-pipeline:
