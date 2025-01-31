@@ -57,14 +57,14 @@ jobs:
     #       echo "Pipeline execution succeeded!"
 
         
-    # - name: Model Approval
-    #   if: success()
-    #   run: |
-    #     # Run the model approval script (make sure you have a script for model approval)
-    #     python Random-Forest/Pipeline/code/ModelApproval.py  # Script for model approval
+    - name: Model Approval
+      # if: success()
+      run: |
+        # Run the model approval script (make sure you have a script for model approval)
+        python Random-Forest/Pipeline/code/ModelApproval.py  # Script for model approval
 
-    # - name: Endpoint Creation
-    #   if: success()
-    #   run: |
-    #     # Run the endpoint creation script
-    #     python Random-Forest/Pipeline/code/EndPointCreation.py  # Script for creating the endpoint
+    - name: Endpoint Creation
+      # if: success()
+      run: |
+        # Run the endpoint creation script
+        python Random-Forest/Pipeline/code/EndPointCreation.py  # Script for creating the endpoint
