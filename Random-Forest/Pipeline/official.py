@@ -309,4 +309,16 @@ definition
 pipeline.upsert(role_arn=role)
 
 execution = pipeline.start()
+
+import time
+status = execution.describe()['PipelineExecutionStatus']
+while status not in ['Succeeded', 'Failed', 'Stopped']:
+    print(f"Pipeline execution status: {status}")
+    time.sleep(60)  # Wait for 60 seconds before checking again
+    status = execution.describe()['PipelineExecutionStatus']
+
+if status == 'Succeeded':
+    print(f"Pipeline execution completed successfully.")
+else:
+    print(f"Pipeline execution failed or stopped with status: {status}")
 print(execution.arn) 
